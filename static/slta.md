@@ -4,23 +4,27 @@ El Sistema de gestión Logística de Transporte Automotriz (SLTA) es una soluci�
 trazabilidad logística en el mercado automobiliario, con un enfoque en la escalabilidad y consistencia de la estructura
 interna de datos.
 
-## Capacidades del producto
+## Funcionalidades del producto
+
+### Gestión de lugares
+
+El sistema administrará un conjunto de lugares (puertos, patios, etc) por donde pasarán los vehículos.
+Estos tendrán zonas y subzonas, en los cuales se posicionarán los vehículos
+
+### Gestión de informes
+
+El sistema le permitirá ingresar informes de estado de los vehículos
+
+### Gestión de lotes
+
+El sistema le permitirá administrar lotes en los cuales se trasladen vehículos
 
 ### Extensibilidad
 
 La base de datos _Informix_ del SLTA está modelada de manera extensible, de tal manera que se pueden implementar nuevas
-clases de lugares y medios de transporte simplemente manipulando un par de tablas. Por ejemplo, es posible agregar
-una ciudad flotante mecánica simplemente ejecutando
-```sql
-insert into TipoTransporte (nombre) values ('Aerobote');
-insert into lugar(nombre, capacidad, geox, geoy, usuariocreador, fecharegistro, tipo) values ('Patio de Isla del cielo',
-20, -33,-51, 1, "1998-03-01 12:00:00", "Patio");
-insert into habilitado(idlugar, idtipo) values ((select idlugar from lugar where nombre='Patio de Isla del cielo'),
-                                                (select idtipo from TipoTransporte where nombre='Aerobote'));
-insert into habilitado(idlugar, idtipo) values ((select idlugar from lugar where nombre='Puerto de Montevideo'),
- (select idtipo from TipoTransporte where nombre='Aerobote'));
-```
-y agregando vehículos de tipo Aerobote.
+clases de lugares y medios de transporte simplemente manipulando un par de tablas.
+
+Vea el [blog](blog?tags=sql) para ejemplos de esto.
 
 ### Irredundancia e inmutabilidad parcial de datos
 
