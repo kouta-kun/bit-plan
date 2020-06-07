@@ -1,7 +1,6 @@
 import datetime
 import random
 
-import pyodbc
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.shortcuts import render
@@ -11,7 +10,7 @@ from . import models, forms
 from django.template import loader
 
 
-def blog(request: HttpRequest):
+def index(request: HttpRequest):
     if request.method == "GET":
         template = loader.get_template("public/blog.html")
         quote = random.choice([
@@ -24,15 +23,9 @@ def blog(request: HttpRequest):
             ('Emboquen el tiro libre, que los buenos volvieron, y están rodando cine de terror.',
              "Carlos 'Indio' Solari")
         ])
-        ctx = {'quote_text': quote[0], 'quote_autor': quote[1]}
+        ctx = {'quote_text': quote[0], 'quote_autor': quote[1], 'parent_name': 'koutarou'}
         return HttpResponse(template.render(ctx, request))
 
-
-def index(request: HttpRequest):
-    if request.method == "GET":
-        template = loader.get_template("public/index.html")
-        ctx = {}
-        return HttpResponse(template.render(ctx, request))
 
 
 def blogpost(request: HttpRequest):
@@ -57,6 +50,6 @@ def blogpost(request: HttpRequest):
             newPost = models.BlogPost(titulo=form.cleaned_data["titulo"], markup=form.cleaned_data["texto"],
                                       fecha=datetime.datetime.now(), tags=form.cleaned_data["tags"])
             newPost.save()
-            return HttpResponseRedirect("blog")
+            return HttpResponseRedirect('./')
         else:
             return render(request, 'public/newBlog.html', {'form': form})
